@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Sir Eijay's ERD Case Files</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,700;1,9..144,500&family=Nunito:wght@500;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#FCEFF2;--bg2:#F6DDE5;--ink:#4A2C3A;--plum:#6B3A52;--rose:#C95B7E;--rose2:#E9A9BC;--cream:#FFF9F7;--muted:#9A6F82}
+*{box-sizing:border-box;margin:0}
+html,body{height:100%}
+body{display:flex;flex-direction:column;height:100vh;height:100dvh;overflow:hidden;-webkit-tap-highlight-color:transparent;color:var(--ink);font-family:'Nunito',system-ui,sans-serif;background:radial-gradient(rgba(201,91,126,.09) 1.6px,transparent 1.8px) 0 0/26px 26px,radial-gradient(ellipse at 50% 40%,var(--bg) 40%,var(--bg2) 100%)}
+.bg{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;text-align:center;font-family:'Fraunces',Georgia,serif;font-style:italic;font-weight:500;font-size:clamp(38px,10vw,170px);line-height:1.02;color:rgba(201,91,126,.07);pointer-events:none;user-select:none;z-index:0}
+.top{position:relative;z-index:2;display:flex;justify-content:flex-end;padding:20px 36px 0}
+.brand{font-size:15px;font-weight:800;color:var(--muted);letter-spacing:.02em}
+.stage{position:relative;z-index:1;flex:1;min-height:0}
+.slide{position:absolute;inset:0;padding:10px 32px 8px;overflow-y:auto;opacity:0;visibility:hidden;transform:translateX(28px);transition:opacity .6s ease,transform .6s ease,visibility 0s .6s}
+.slide.before{transform:translateX(-28px)}
+.slide.active{opacity:1;visibility:visible;transform:none;transition-delay:0s}
+.case{display:grid;grid-template-columns:minmax(270px,330px) 1fr;gap:28px;max-width:1300px;margin:0 auto;align-items:start}
+.file{background:var(--cream);border-radius:20px;padding:22px 22px 20px;box-shadow:0 12px 32px rgba(107,58,82,.15);border:2px solid #F3CBD8;opacity:0;transform:translateX(-16px);transition:opacity .6s ease,transform .6s ease}
+.active .file{opacity:1;transform:none;transition-delay:.1s}
+.stamp{display:inline-block;border:2px dashed var(--rose);color:var(--rose);font-weight:800;font-size:13px;letter-spacing:.12em;text-transform:uppercase;padding:3px 12px;border-radius:8px;transform:rotate(-3deg)}
+.scene{margin:14px 0 12px;padding:14px 8px;border-radius:16px;text-align:center;font-size:42px;background:linear-gradient(135deg,#FFE3EA,#EBDDF6)}
+.scene span{display:inline-block;margin:0 5px;animation:bob 3s ease-in-out infinite;animation-delay:calc(var(--k)*.45s)}
+@keyframes bob{50%{transform:translateY(-7px)}}
+.file h1{font-family:'Fraunces',Georgia,serif;font-weight:700;font-size:clamp(24px,2.3vw,32px);line-height:1.12;color:var(--plum)}
+.tag{margin-top:4px;font-style:italic;color:var(--muted);font-weight:600}
+.meta{display:flex;gap:22px;margin:14px 0}
+.meta small{display:block;font-size:12px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:3px}
+.meta b{font-size:15px}
+.pips{display:flex;gap:5px;margin-bottom:3px}
+.pips i{width:12px;height:12px;border-radius:50%;background:#EBD3DC}
+.pips i.on{background:var(--rose)}
+.mission{background:#FFEDF1;border-radius:12px;padding:11px 13px;font-size:15px;line-height:1.45;font-weight:600}
+.mission b{display:block;color:var(--rose);margin-bottom:2px}
+.tipbox{max-height:0;opacity:0;overflow:hidden;transition:max-height .7s ease,opacity .5s ease,margin .5s ease}
+.tips .tipbox{max-height:460px;opacity:1;margin-top:12px}
+.tipbox ol{padding:12px 14px 12px 32px;background:#F4EAFB;border-radius:12px;font-size:14px;line-height:1.5;font-weight:600}
+.tipbox li{margin-bottom:5px}
+.rh{display:flex;align-items:baseline;gap:12px;margin:4px 0 14px}
+.rh h2{font-family:'Fraunces',Georgia,serif;font-size:clamp(24px,2.4vw,34px);color:var(--plum)}
+.rh span{font-weight:800;color:var(--rose);font-size:14px}
+.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:20px 20px}
+.note{position:relative;background:var(--nc);border-radius:14px;padding:18px 16px 16px 58px;min-height:92px;box-shadow:0 7px 18px rgba(107,58,82,.13);opacity:0;transform:translateY(16px) rotate(var(--r));transition:opacity .5s ease,transform .6s cubic-bezier(.2,.8,.2,1)}
+.active .note{opacity:1;transform:rotate(var(--r));transition-delay:var(--d)}
+.note::before{content:"";position:absolute;top:-9px;left:50%;width:70px;height:18px;margin-left:-35px;background:rgba(255,255,255,.65);border-radius:3px;transform:rotate(-2deg);box-shadow:0 1px 3px rgba(107,58,82,.12)}
+.note:last-child:nth-child(odd){grid-column:1/-1;max-width:calc(50% - 10px);justify-self:center}
+.no{position:absolute;left:14px;top:16px;width:32px;height:32px;border-radius:50%;background:var(--rose);color:#fff;display:grid;place-items:center;font:800 16px 'Nunito',sans-serif;font-style:normal}
+.pic{position:absolute;left:10px;bottom:10px;font-size:15px;opacity:.9;letter-spacing:1px}
+.note p{font-size:clamp(15px,1.2vw,18px);line-height:1.5;font-weight:700}
+.nav{position:relative;z-index:2;display:flex;justify-content:center;align-items:center;gap:34px;padding:8px 36px 22px}
+.mid{display:flex;align-items:center;gap:22px}
+.arrow{width:54px;height:54px;border-radius:50%;border:2px solid var(--plum);background:var(--plum);color:#FFF1F5;font:500 30px/1 'Fraunces',Georgia,serif;cursor:pointer;padding:0 0 4px;transition:background .25s,transform .2s,opacity .3s}
+.arrow:disabled{opacity:.28;cursor:default}
+.act{min-width:170px;padding:13px 24px;border-radius:999px;border:2px solid var(--plum);background:transparent;color:var(--plum);font:800 16px 'Nunito',sans-serif;cursor:pointer;transition:background .3s,color .3s,border-color .3s,transform .2s}
+.act.on{background:var(--rose);border-color:var(--rose);color:#fff}
+@media (hover:hover){.arrow:hover:not(:disabled){background:var(--rose);border-color:var(--rose);transform:scale(1.06)}.act:hover{background:var(--plum);color:#fff;transform:translateY(-2px)}}
+button{touch-action:manipulation}
+button:focus-visible{outline:3px solid var(--rose2);outline-offset:3px}
+.dots{display:flex;gap:10px}
+.dots button{width:11px;height:11px;border-radius:50%;border:2px solid var(--plum);background:transparent;padding:0;cursor:pointer;transition:background .3s,transform .3s}
+.dots button.on{background:var(--plum);transform:scale(1.25)}
+@media (max-width:900px){
+.top{padding:12px 16px 0}.brand{font-size:13px}
+.slide{padding:6px 14px 8px}
+.case{grid-template-columns:1fr;gap:18px}
+.grid{grid-template-columns:1fr;gap:18px}
+.note:last-child:nth-child(odd){max-width:none}
+.scene{font-size:34px;margin:10px 0}
+.nav{flex-direction:column;gap:10px;padding:6px 14px calc(14px + env(safe-area-inset-bottom))}
+.mid{gap:16px}
+.act{min-width:0;width:100%;padding:12px 8px;font-size:15px}
+.arrow{width:46px;height:46px;font-size:26px}
+}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition-duration:.01s!important}}
+</style>
+</head>
+<body>
+<div class="bg">Turn the rules<br>into an ERD</div>
+<div class="top"><span class="brand">Sir Eijay's ERD Case Files</span></div>
+<div class="stage" id="stage"></div>
+<div class="nav">
+  <div class="mid">
+    <button class="arrow" id="prev" aria-label="Previous case">&lsaquo;</button>
+    <div class="dots" id="dots"></div>
+    <button class="arrow" id="next" aria-label="Next case">&rsaquo;</button>
+  </div>
+  <button class="act" id="bp">Detective tips</button>
+</div>
+<script>
+const CASES=[
+{name:"Paws &amp; Relax Pet Hotel",tag:"Where every pet gets a vacation.",lvl:1,lab:"Easy",min:15,scene:["🐶","🏨","🛏️"],rules:[
+["An owner can register many pets, and each pet belongs to exactly one owner.","🧑 🐶"],
+["A pet can stay at the hotel many times, and each stay is for exactly one pet.","🐶 🗓️"],
+["Each stay takes place in exactly one room, and a room can host many stays over time.","🗓️ 🚪"],
+["The hotel records the owner's name and phone, the pet's name and breed, the room's number and daily price, and each stay's check-in and check-out dates.","📝"]]},
+{name:"Boba Bliss Campus Milk Tea Shop",tag:"Sip, tap, repeat.",lvl:2,lab:"Easy to Medium",min:20,scene:["🧋","🧾","🍓"],rules:[
+["A customer can place many orders, and an order belongs to exactly one customer.","🧑 🧾"],
+["An order can contain many drinks, and a drink can appear in many orders. The shop records the quantity of each drink in an order.","🧾 🧋"],
+["Each drink has exactly one size.","🧋 📏"],
+["Each drink belongs to exactly one category (Milk Tea, Fruit Tea, Coffee), and a category can have many drinks.","🧋 🏷️"],
+["Each order is handled by exactly one cashier, and a cashier can handle many orders.","🧾 💁"],
+["A customer may or may not have a loyalty card, but every loyalty card belongs to exactly one customer.","🧑 💳"]]},
+{name:"Barangay Fiesta Fun",tag:"The whole barangay shows up.",lvl:3,lab:"Medium",min:25,scene:["🎉","🏘️","🎪"],rules:[
+["A barangay hosts many fiestas (one each year), and each fiesta belongs to exactly one barangay.","🏘️ 🎉"],
+["A fiesta has many events (parade, singing contest, basketball), and each event belongs to exactly one fiesta.","🎉 🎪"],
+["A participant can join many events, and an event can have many participants. The organizers record each participant's registration date.","🙋 🎪"],
+["Each event is held at exactly one venue, and a venue can host many events.","🎪 📍"],
+["Each event has exactly one organizer in charge, and an organizer can be in charge of many events.","🎪 🗂️"]]},
+{name:"Clash Cup Esports Tournament",tag:"Teams, matches, and bragging rights.",lvl:4,lab:"Medium to Hard",min:30,scene:["🎮","🏆","⚔️"],rules:[
+["A tournament can have many teams, and a team can join many tournaments.","🏆 👥"],
+["A team has many players, and each player belongs to exactly one team.","👥 🎮"],
+["Each team has exactly one coach, and a coach coaches exactly one team.","👥 📣"],
+["A tournament has many matches, and each match belongs to exactly one tournament.","🏆 ⚔️"],
+["Each match is played between exactly two teams, and a team can play in many matches. The score of each team in each match is recorded.","⚔️ 👥"],
+["Each match is refereed by exactly one referee, and a referee can referee many matches.","⚔️ 🚩"],
+["Each player has a unique in-game nickname.","🎮 🏷️"]]},
+{name:"Kuya Rider Delivery App",tag:"Hot food, fast wheels.",lvl:5,lab:"Hard",min:35,scene:["🛵","🍱","📍"],rules:[
+["A customer can place many orders, and each order belongs to exactly one customer.","🧑 🧾"],
+["A customer can save many delivery addresses, and each address belongs to exactly one customer. Each order is delivered to exactly one saved address.","🧑 🏠"],
+["Each order is from exactly one restaurant, and a restaurant can receive many orders.","🧾 🍽️"],
+["A restaurant offers many menu items, and each menu item belongs to exactly one restaurant.","🍽️ 📋"],
+["An order can contain many menu items, and a menu item can be in many orders. The quantity is recorded.","🧾 📋"],
+["An order is delivered by at most one rider, because it might not be assigned yet. A rider can deliver many orders.","🧾 🛵"],
+["A customer may rate an order after delivery. Each rating belongs to exactly one order, and an order has at most one rating.","⭐ 🧾"],
+["Riders usually use one motorcycle, but some riders use more than one.","🛵 🏍️"]]}
+];
+const TIPS=["Underline the nouns. They are your entity candidates.","Circle the verbs. They are your relationships.","Find the counting words: &ldquo;one&rdquo;, &ldquo;exactly one&rdquo;, &ldquo;many&rdquo;, &ldquo;at most one&rdquo;.","Spot any &ldquo;many on both sides&rdquo;. Those need a helper in the middle.","Pick an ID key for each entity, then decide what else it remembers.","Read every line back as a sentence, in both directions."];
+const COLS=["#FFE3EA","#FFEBDD","#EDE2F7","#FFF3D6","#E2F2EA"];
+const stage=document.getElementById('stage'),dotsEl=document.getElementById('dots');
+const prev=document.getElementById('prev'),next=document.getElementById('next'),bp=document.getElementById('bp');
+const slides=[],dots=[];
+CASES.forEach((c,i)=>{
+ const s=document.createElement('section');s.className='slide';
+ const pips=[1,2,3,4,5].map(n=>'<i class="'+(n<=c.lvl?'on':'')+'"></i>').join('');
+ const scene=c.scene.map((e,k)=>'<span style="--k:'+k+'">'+e+'</span>').join('');
+ const notes=c.rules.map((r,k)=>'<article class="note" style="--r:'+((k%3)-1)*0.8+'deg;--nc:'+COLS[k%COLS.length]+';--d:'+(250+k*120)+'ms"><i class="no">'+(k+1)+'</i><p>'+r[0]+'</p><span class="pic">'+r[1]+'</span></article>').join('');
+ s.innerHTML='<div class="case"><aside class="file"><span class="stamp">Case File #'+(i+1)+'</span><div class="scene">'+scene+'</div><h1>'+c.name+'</h1><p class="tag">'+c.tag+'</p>'
+  +'<div class="meta"><div><small>Difficulty</small><div class="pips">'+pips+'</div><b>'+c.lab+'</b></div><div><small>Suggested time</small><b>'+c.min+' minutes</b></div></div>'
+  +'<div class="mission"><b>Your mission</b>Read every rule, then draw the ERD on paper: entities, relationships, cardinalities, and keys.</div>'
+  +'<div class="tipbox"><ol>'+TIPS.map(t=>'<li>'+t+'</li>').join('')+'</ol></div></aside>'
+  +'<section class="rules"><div class="rh"><h2>The Rules</h2><span>'+c.rules.length+' rules</span></div><div class="grid">'+notes+'</div></section></div>';
+ stage.appendChild(s);slides.push(s);
+ const d=document.createElement('button');d.setAttribute('aria-label','Go to case '+(i+1));d.onclick=()=>go(i);dotsEl.appendChild(d);dots.push(d);
+});
+let cur=0;
+function syncTips(){const t=slides[cur].classList.contains('tips');bp.textContent=t?'Hide tips':'Detective tips';bp.classList.toggle('on',t)}
+bp.onclick=()=>{slides[cur].classList.toggle('tips');syncTips()};
+function go(n){
+ cur=Math.max(0,Math.min(slides.length-1,n));
+ slides.forEach((s,j)=>{s.classList.toggle('active',j==cur);s.classList.toggle('before',j<cur)});
+ dots.forEach((d,j)=>d.classList.toggle('on',j==cur));
+ prev.disabled=cur==0;next.disabled=cur==slides.length-1;
+ syncTips();
+}
+prev.onclick=()=>go(cur-1);next.onclick=()=>go(cur+1);
+document.addEventListener('keydown',e=>{
+ if(e.key=='ArrowRight'||e.key=='PageDown'){go(cur+1)}
+ if(e.key=='ArrowLeft'||e.key=='PageUp'){go(cur-1)}
+});
+go(0);
+</script>
+</body>
+</html>
